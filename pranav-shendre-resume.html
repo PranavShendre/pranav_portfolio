@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pranav Shendre - Software Engineer Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Earthy Warmth (Background: #FDFBF8, Accents: #D97706 (Orange-600), Text: #333333) -->
+    <!-- Application Structure Plan: A single-page, multi-section layout with a strong visual hierarchy. Features a prominent Hero section for immediate impression, a dynamic Skills Dashboard with filtering and a donut chart for visual insight, a refined Experience Timeline, and clear Education & Languages sections. The structure prioritizes visual flow and ease of information discovery, moving from high-level summary to detailed experience. -->
+    <!-- Visualization & Content Choices: Skills -> Interactive Grid + Donut Chart. Goal: Visually segment and highlight diverse skill sets and show proportion of expertise. Interaction: Category filters for grid, hover for chart tooltips. Justification: Offers both a comprehensive list and a quick proportional overview, enhancing engagement. Library: Chart.js for donut chart. Experience -> Enhanced Timeline with distinctive markers. Goal: Provide a clear, engaging chronological narrative of career progression. Interaction: Subtle hover effects on items. Justification: Timelines are intuitively understood and visually appealing for career paths. Method: HTML/CSS/JS. CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8; /* Light, warm background */
+            color: #333333; /* Darker, soft black for text */
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .hero-background {
+            background-image: linear-gradient(to top, #fefce8, #fffbeb); /* Subtle gradient for hero */
+        }
+        .nav-link {
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #D97706; /* Accent color */
+            transform: translateY(-2px);
+        }
+        .skill-card {
+            background-color: #ffffff;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* subtle shadow */
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .skill-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+        }
+        .skill-btn {
+            transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+        .skill-btn:hover {
+            transform: translateY(-2px);
+        }
+        .skill-btn.active {
+            background-color: #D97706; /* Accent color */
+            color: #ffffff;
+            box-shadow: 0 2px 4px rgba(217, 119, 6, 0.4);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* Adjusted max-width for better visual balance */
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px; /* Base height */
+            max-height: 50vh;
+            display: flex; /* Flex to center content vertically if needed */
+            justify-content: center;
+            align-items: center;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .timeline-container {
+            border-left: 3px solid #E5E7EB; /* Light gray line for timeline */
+            padding-left: 2rem;
+            position: relative;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2.5rem; /* Increased spacing */
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.85rem; /* Adjusted for line thickness and circle size */
+            top: 0.5rem; /* Vertically center with title */
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            background-color: #D97706; /* Accent color for markers */
+            border: 4px solid #FDFBF8; /* Matches body background */
+            z-index: 1;
+        }
+        .timeline-item:hover .timeline-card {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+        .timeline-card {
+            background-color: #ffffff;
+            padding: 1.75rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .education-card {
+            background-color: #ffffff;
+            padding: 1.75rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .education-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+        <!-- Header / Hero Section -->
+        <header class="text-center py-16 mb-16 rounded-xl hero-background shadow-lg">
+            <h1 class="text-6xl font-extrabold text-gray-900 leading-tight drop-shadow-sm">Pranav Shendre</h1>
+            <p class="mt-4 text-2xl text-gray-700 font-medium">Software Engineer | Full-Stack, AI/ML & Robotics Specialist</p>
+            <div class="mt-8 flex justify-center space-x-8 text-gray-600 font-medium">
+                <a href="mailto:pranavshendre08@gmail.com" class="hover:text-orange-600 transition duration-300">
+                    <span class="mr-1">&#9993;</span> pranavshendre08@gmail.com
+                </a>
+                <span>&bull;</span>
+                <a href="tel:8180815629" class="hover:text-orange-600 transition duration-300">
+                    <span class="mr-1">&#9742;</span> 8180815629
+                </a>
+                <span>&bull;</span>
+                <span class="text-gray-600">
+                    <span class="mr-1">&#9906;</span> Mumbai, India
+                </span>
+            </div>
+             <div class="mt-4 flex justify-center space-x-8 text-gray-600 font-medium">
+                <a href="[Your LinkedIn Profile URL]" target="_blank" class="hover:text-orange-600 transition duration-300">
+                    <span class="mr-1">&#128279;</span> LinkedIn
+                </a>
+                <span>&bull;</span>
+                <a href="[Your GitHub Profile URL]" target="_blank" class="hover:text-orange-600 transition duration-300">
+                    <span class="mr-1">&#128279;</span> GitHub
+                </a>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="sticky top-0 bg-FDFBF8/90 backdrop-blur-sm z-10 mb-16 py-4 border-b border-gray-200 shadow-sm rounded-b-lg">
+            <ul class="flex justify-center space-x-6 sm:space-x-10 text-lg">
+                <li><a href="#summary" class="nav-link text-gray-700 hover:text-orange-600 font-semibold">Summary</a></li>
+                <li><a href="#skills" class="nav-link text-gray-700 hover:text-orange-600 font-semibold">Skills</a></li>
+                <li><a href="#experience" class="nav-link text-gray-700 hover:text-orange-600 font-semibold">Experience</a></li>
+                <li><a href="#education" class="nav-link text-gray-700 hover:text-orange-600 font-semibold">Education</a></li>
+            </ul>
+        </nav>
+
+        <!-- Summary Section -->
+        <section id="summary" class="mb-20 scroll-mt-28">
+            <h2 class="text-4xl font-bold text-center text-gray-800 mb-10">Professional Summary</h2>
+            <div class="max-w-4xl mx-auto bg-white p-10 rounded-xl shadow-lg">
+                <p class="text-lg leading-relaxed text-gray-700">
+                    Highly accomplished and versatile Software Engineer with a proven track record in full-stack web development, advanced computer vision, and robotics. My expertise spans modern JavaScript frameworks (Angular, ReactJs), robust backend technologies (Node.js, Python, FastAPI, Flask), and diverse database management (MySQL, PostgreSQL, BigQuery). I am proficient in designing, developing, and deploying complex AI/ML solutions using PyTorch, TensorFlow, and YOLOv8 for real-time object detection. I am also adept at creating high-performance desktop applications with C++, Qt, and QML, alongside hands-on experience with ROS for robotics and Docker for scalable deployments. I am eager to apply my strong technical skills and problem-solving abilities to innovative software development challenges.
+                </p>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="mb-20 scroll-mt-28">
+            <h2 class="text-4xl font-bold text-center text-gray-800 mb-10">Technical Skills Dashboard</h2>
+            <div class="text-center mb-8 max-w-3xl mx-auto">
+                <p class="text-gray-700 mb-6 text-lg">
+                    This interactive dashboard provides a comprehensive view of my technical abilities. You can filter the skills by domain to explore specific areas of expertise, or refer to the chart below for a proportional breakdown of my core competencies.
+                </p>
+                <div class="flex flex-wrap justify-center gap-3 mb-10">
+                    <button class="skill-btn active px-6 py-2 text-md font-medium text-gray-700 bg-white rounded-full shadow-md hover:bg-gray-100 transform hover:scale-105" data-filter="all">All Skills</button>
+                    <button class="skill-btn px-6 py-2 text-md font-medium text-gray-700 bg-white rounded-full shadow-md hover:bg-gray-100 transform hover:scale-105" data-filter="web">Web Development</button>
+                    <button class="skill-btn px-6 py-2 text-md font-medium text-gray-700 bg-white rounded-full shadow-md hover:bg-gray-100 transform hover:scale-105" data-filter="ai">AI/ML</button>
+                    <button class="skill-btn px-6 py-2 text-md font-medium text-gray-700 bg-white rounded-full shadow-md hover:bg-gray-100 transform hover:scale-105" data-filter="desktop">Desktop Dev</button>
+                    <button class="skill-btn px-6 py-2 text-md font-medium text-gray-700 bg-white rounded-full shadow-md hover:bg-gray-100 transform hover:scale-105" data-filter="devops">DevOps & Robotics</button>
+                </div>
+            </div>
+
+            <div id="skills-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 mb-12">
+                <!-- Skills will be dynamically inserted here -->
+            </div>
+
+            <div class="bg-white p-8 rounded-xl shadow-lg">
+                <h3 class="text-2xl font-bold text-center text-gray-800 mb-6">Expertise Distribution</h3>
+                <div class="chart-container">
+                    <canvas id="skillsDonutChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="mb-20 scroll-mt-28">
+            <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">Professional Journey</h2>
+            <div class="relative max-w-4xl mx-auto timeline-container">
+                <p class="text-gray-700 mb-8 text-lg text-center md:text-left">
+                    Explore my professional journey and the key contributions made at each role, showcasing the evolution of my technical expertise across diverse projects and responsibilities.
+                </p>
+                <!-- Experience items will be dynamically inserted here -->
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section id="education" class="mb-20 scroll-mt-28">
+            <h2 class="text-4xl font-bold text-center text-gray-800 mb-10">Education & Languages</h2>
+            <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
+                 <!-- Education items will be dynamically inserted here -->
+                 <div class="education-card">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Languages</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                        <li>English</li>
+                        <li>Marathi</li>
+                        <li>Hindi</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const skillsData = [
+                { name: 'C/C++', category: 'desktop', level: 85 },
+                { name: 'Python', category: 'web', level: 95 },
+                { name: 'JavaScript/TS', category: 'web', level: 90 },
+                { name: 'SQL', category: 'web', level: 80 },
+                { name: 'Angular', category: 'web', level: 90 },
+                { name: 'ReactJs', category: 'web', level: 85 },
+                { name: 'Node.js', category: 'web', level: 90 },
+                { name: 'FastAPI', category: 'web', level: 85 },
+                { name: 'Flask', category: 'web', level: 80 },
+                { name: 'Qt & QML', category: 'desktop', level: 80 },
+                { name: 'PyTorch', category: 'ai', level: 90 },
+                { name: 'TensorFlow', category: 'ai', level: 80 },
+                { name: 'YOLOv8', category: 'ai', level: 90 },
+                { name: 'Object Detection', category: 'ai', level: 88 },
+                { name: 'Image Processing', category: 'ai', level: 85 },
+                { name: 'ROS', category: 'devops', level: 75 },
+                { name: 'OpenCV', category: 'devops', level: 80 },
+                { name: 'Docker', category: 'devops', level: 85 },
+                { name: 'GCP', category: 'devops', level: 70 },
+                { name: 'Microservices', category: 'devops', level: 88 },
+                { name: 'RESTful APIs', category: 'web', level: 90 },
+                { name: 'Postman', category: 'web', level: 85 }
+            ];
+
+            const experienceData = [
+                {
+                    role: 'Software Engineer',
+                    company: 'Robro Systems Pvt Ltd',
+                    date: 'March 2024 – Present',
+                    details: [
+                        'Developed and maintained scalable RESTful APIs using Python and Node.js (TypeScript), seamlessly integrating with Angular frontends to enhance system performance and scalability.',
+                        'Engineered full-stack web applications for real-time fabric defect detection systems, leveraging Angular, Node.js, Python, and modern web technologies, improving operational efficiency.',
+                        'Built and trained advanced AI models for defect identification in technical fabrics using YOLOv8 and PyTorch, significantly improving detection accuracy by 15%.',
+                        'Designed and implemented a high-performance desktop fabric inspection application for Ubuntu using C++, Qt, and QML, enhancing local processing capabilities and providing an intuitive user interface.',
+                        'Deployed and managed production applications using Docker containers, standardizing environments and streamlining CI/CD processes.',
+                        'Developed real-time data processing pipelines utilizing ROS1 Noetic for efficient sensor data handling in robotic applications, reducing latency by 20%.'
+                    ]
+                },
+                {
+                    role: 'Data Analyst Intern',
+                    company: 'iNeuron Intelligence Pvt. Ltd.',
+                    date: 'February 2022 – May 2022',
+                    details: [
+                        'Built Machine Learning models using Python for comprehensive data analysis, providing actionable insights for business intelligence.',
+                        'Developed a Flight Fare Prediction Web Application using Flask, demonstrating proficiency in full-stack web application development.',
+                        'Achieved 90% accuracy in predicting future trends and sales through the application of advanced distribution models, informing strategic decisions.'
+                    ]
+                },
+                {
+                    role: 'Automotive Trainer',
+                    company: 'Learnet Skills Ltd.',
+                    date: 'December 2020 – November 2021',
+                    details: [
+                        'Delivered technical training and contributed to skill development programs under the Skill India government scheme, enhancing participant capabilities.'
+                    ]
+                },
+                 {
+                    role: 'FEA Engineer',
+                    company: 'Denfab Consulting Engineers Pvt. Ltd.',
+                    date: 'February 2017 – May 2018',
+                    details: [
+                        'Performed analytical design and modeling for engineering projects, ensuring structural integrity and performance.',
+                        'Developed scripts for automation of engineering calculations, significantly reducing manual effort and potential errors.'
+                    ]
+                }
+            ];
+
+            const educationData = [
+                {
+                    degree: 'PG-Diploma in CDAC (Computer Software Technology)',
+                    institution: 'Centre for Development of Advanced Computing, Mumbai',
+                    year: '2023'
+                },
+                {
+                    degree: 'Bachelor of Engineering in Mechanical Engineering',
+                    institution: 'North Maharashtra University, Jalgaon',
+                    year: '2016'
+                },
+                {
+                    degree: 'Diploma in Mechanical Engineering',
+                    institution: 'MSBTE, Mumbai',
+                    year: '2013' /* Placeholder, please fill with actual year */
+                }
+            ];
+
+            const skillsGrid = document.getElementById('skills-grid');
+            const skillBtns = document.querySelectorAll('.skill-btn');
+            const experienceContainer = document.querySelector('.timeline-container');
+            const educationContainer = document.querySelector('#education .grid');
+
+            function renderSkills(filter = 'all') {
+                skillsGrid.innerHTML = '';
+                const filteredSkills = filter === 'all' ? skillsData : skillsData.filter(s => s.category === filter);
+                filteredSkills.forEach(skill => {
+                    const skillEl = document.createElement('div');
+                    skillEl.className = 'skill-card p-4 text-center font-medium text-gray-700 transform hover:-translate-y-1 transition duration-200';
+                    skillEl.innerHTML = `<span class="block text-xl mb-1">${getSkillIcon(skill.name)}</span> ${skill.name}`;
+                    skillsGrid.appendChild(skillEl);
+                });
+            }
+
+            function getSkillIcon(skillName) {
+                const icons = {
+                    'C/C++': '&#9881;', /* Gear */
+                    'Python': '&#128013;', /* Snake emoji */
+                    'JavaScript/TS': '&#9884;', /* High Voltage */
+                    'SQL': '&#128424;', /* Database emoji */
+                    'Angular': '&#128187;', /* Laptop */
+                    'ReactJs': '&#10024;', /* Sparkle */
+                    'Node.js': '&#127795;', /* Leaf */
+                    'FastAPI': '&#128640;', /* Rocket */
+                    'Flask': '&#9749;', /* Teacup */
+                    'Qt & QML': '&#128187;', /* Laptop (Desktop App) */
+                    'PyTorch': '&#129504;', /* Brain */
+                    'TensorFlow': '&#129504;', /* Brain */
+                    'YOLOv8': '&#128065;', /* Eye */
+                    'Object Detection': '&#128065;', /* Eye */
+                    'Image Processing': '&#128247;', /* Camera */
+                    'ROS': '&#129302;', /* Robot */
+                    'OpenCV': '&#128270;', /* Magnifying Glass */
+                    'Docker': '&#128674;', /* Ship */
+                    'GCP': '&#9729;', /* Cloud */
+                    'Microservices': '&#127963;', /* Buildings */
+                    'RESTful APIs': '&#128203;', /* Clipboard */
+                    'Postman': '&#128236;' /* Envelope */
+                };
+                return icons[skillName] || '&#9733;'; /* Star */
+            }
+
+            skillBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    skillBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    renderSkills(btn.dataset.filter);
+                });
+            });
+            
+            function renderExperience() {
+                experienceContainer.innerHTML = `<p class="text-gray-700 mb-8 text-lg text-center md:text-left">Explore my professional journey and the key contributions made at each role, showcasing the evolution of my technical expertise across diverse projects and responsibilities.</p>`;
+                experienceData.forEach(item => {
+                    const expEl = document.createElement('div');
+                    expEl.className = 'timeline-item';
+                    let detailsHtml = item.details.map(d => `<li class="text-gray-600">${d}</li>`).join('');
+                    expEl.innerHTML = `
+                        <div class="timeline-card">
+                            <h3 class="text-xl font-bold text-gray-800">${item.role}</h3>
+                            <p class="font-semibold text-orange-600 mb-1">${item.company}</p>
+                            <p class="text-sm text-gray-500 mb-3">${item.date}</p>
+                            <ul class="list-disc list-inside space-y-1 text-gray-700">${detailsHtml}</ul>
+                        </div>
+                    `;
+                    experienceContainer.appendChild(expEl);
+                });
+            }
+
+            function renderEducation() {
+                educationContainer.innerHTML = ''; // Clear existing content to re-render
+                educationData.forEach(item => {
+                    const eduEl = document.createElement('div');
+                    eduEl.className = 'education-card';
+                    eduEl.innerHTML = `
+                        <h3 class="text-xl font-bold text-gray-800">${item.degree}</h3>
+                        <p class="text-gray-600">${item.institution}</p>
+                        <p class="text-sm text-gray-500 mt-1">${item.year}</p>
+                    `;
+                    educationContainer.appendChild(eduEl);
+                });
+                 // Re-add the Languages card after education items
+                const languagesCard = document.createElement('div');
+                languagesCard.className = 'education-card';
+                languagesCard.innerHTML = `
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Languages</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                        <li>English</li>
+                        <li>Marathi</li>
+                        <li>Hindi</li>
+                    </ul>
+                `;
+                educationContainer.appendChild(languagesCard);
+            }
+
+            renderSkills();
+            renderExperience();
+            renderEducation();
+
+            // Chart.js implementation (Donut Chart)
+            const ctxDonut = document.getElementById('skillsDonutChart').getContext('2d');
+            const skillsCategories = {
+                'Web Dev': skillsData.filter(s => s.category === 'web').length,
+                'AI/ML': skillsData.filter(s => s.category === 'ai').length,
+                'Desktop Dev': skillsData.filter(s => s.category === 'desktop').length,
+                'DevOps & Robotics': skillsData.filter(s => s.category === 'devops').length
+            };
+            const categoryLabels = Object.keys(skillsCategories);
+            const categoryCounts = Object.values(skillsCategories);
+
+            const skillsDonutChart = new Chart(ctxDonut, {
+                type: 'doughnut',
+                data: {
+                    labels: categoryLabels,
+                    datasets: [{
+                        data: categoryCounts,
+                        backgroundColor: [
+                            'rgba(217, 119, 6, 0.8)',   /* Orange-600 */
+                            'rgba(245, 158, 11, 0.8)',  /* Amber-500 */
+                            'rgba(251, 191, 36, 0.8)',  /* Yellow-400 */
+                            'rgba(253, 224, 71, 0.8)'   /* Yellow-200 */
+                        ],
+                        borderColor: '#FDFBF8',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                font: {
+                                    size: 14,
+                                    family: 'Inter'
+                                },
+                                color: '#333333'
+                            }
+                        },
+                        tooltip: {
+                             callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    const total = context.dataset.data.reduce((sum, val) => sum + val, 0);
+                                    const value = context.parsed;
+                                    const percentage = ((value / total) * 100).toFixed(1) + '%';
+                                    return label + percentage;
+                                }
+                            },
+                             titleFont: { size: 14, family: 'Inter' },
+                             bodyFont: { size: 14, family: 'Inter' },
+                             padding: 10,
+                             cornerRadius: 6,
+                             backgroundColor: 'rgba(51, 51, 51, 0.9)',
+                             titleColor: '#ffffff',
+                             bodyColor: '#ffffff'
+                        }
+                    }
+                }
+            });
+
+            // Smooth scrolling for navigation
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
